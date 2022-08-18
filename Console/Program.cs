@@ -1,6 +1,7 @@
 ﻿using Libs;
 
 bool closeOnCompletion = false;
+bool configUpdateNeeded = false;
 
 foreach (var arg in Environment.GetCommandLineArgs())
 {
@@ -10,24 +11,48 @@ foreach (var arg in Environment.GetCommandLineArgs())
 	}
 }
 
-UserConfig config;                                      // Get configuration from config file
+UserConfig? config = null;
 
 try
 {
-	config = new UserConfig();
+	config = new UserConfig();          // Get configuration from config file
 }
 catch (Exception ex)
 {
 	Console.WriteLine(ex.Message);
-	string warcraftDirectory = GetDirectoryFromUser();
-	config = new UserConfig(warcraftDirectory);         // On failure get config from user
-	config.UpdateFile();
-	Console.WriteLine("Updated Config file.");
+}
+
+while(config == null)                   // On failure get config from user
+{
+	string input = GetDirectoryFromUser();
+
+	try
+	{
+		config = new UserConfig(input);
+		configUpdateNeeded = true;
+		Console.WriteLine("Verified World of Warcraft directory");
+	}
+	catch(Exception ex)
+	{
+		Console.WriteLine($"Invalid path.  {ex.Message}");
+	}
 }
 
 var clients = Client.GetList(config.GameDirectory);
 
-Console.WriteLine(Archiver.Start(clients, config.GameDirectory));   // Archive clients, return and print status
+Console.WriteLine(Archiver.Start(clients, config.GameDirectory));   // Archive clients, print status
+
+if (configUpdateNeeded)
+{
+	try
+	{
+		config.UpdateFile();
+	}
+	catch (Exception ex)
+	{
+		Console.WriteLine($"Failed to save config file, reason:  {ex.Message}{Environment.NewLine}");
+	}
+}
 
 if (!closeOnCompletion)
 {
@@ -37,42 +62,15 @@ if (!closeOnCompletion)
 
 static string GetDirectoryFromUser()
 {
-	var path = queryDirectory();
-
-	while (!pathIsValid(path))
-	{
-		Console.WriteLine($"{Environment.NewLine}" +
-							$"**Invalid path**" +
-							$"{Environment.NewLine}");
-		path = queryDirectory();
-	}
-
-	return path;
-}
-
-static string queryDirectory()
-{
-	Console.WriteLine($"Enter the location of the WoW folder." +
-						$"{Environment.NewLine}" +
-						$"\tExample:  C:\\Program Files (x86)\\World of Warcraft\\" +
-						$"{Environment.NewLine}");
+	Console.WriteLine($"Enter the location of your World of Warcraft folder." +
+					$"{Environment.NewLine}" +
+					$"\tExample:  C:\\World of Warcraft\\" +
+					$"{Environment.NewLine}");
 
 	var input = Console.ReadLine();
 	Console.WriteLine();
-	if (input == null)
-	{
-		input = String.Empty;
-	}
+
+	input ??= String.Empty;
 
 	return input;
-}
-
-static bool pathIsValid(string input)
-{
-	if (Directory.Exists(input) && input.Contains("World of Warcraft"))
-	{
-		return true;
-	}
-
-	return false;
 }
