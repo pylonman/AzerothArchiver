@@ -28,12 +28,10 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
-			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
 			this.labelStatus = new System.Windows.Forms.Label();
-			this.textBoxGameDirectory = new System.Windows.Forms.TextBox();
 			this.buttonStart = new System.Windows.Forms.Button();
-			this.buttonFolderDialog = new System.Windows.Forms.Button();
 			this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
+			this.labelDirectory = new System.Windows.Forms.Label();
 			this.SuspendLayout();
 			// 
 			// labelStatus
@@ -41,23 +39,16 @@
 			this.labelStatus.AutoSize = true;
 			this.labelStatus.BackColor = System.Drawing.Color.Gainsboro;
 			this.labelStatus.Font = new System.Drawing.Font("Source Code Pro", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-			this.labelStatus.Location = new System.Drawing.Point(69, 220);
+			this.labelStatus.Location = new System.Drawing.Point(50, 153);
 			this.labelStatus.MaximumSize = new System.Drawing.Size(950, 250);
 			this.labelStatus.MinimumSize = new System.Drawing.Size(950, 250);
 			this.labelStatus.Name = "labelStatus";
 			this.labelStatus.Size = new System.Drawing.Size(950, 250);
 			this.labelStatus.TabIndex = 0;
 			// 
-			// textBoxGameDirectory
-			// 
-			this.textBoxGameDirectory.Location = new System.Drawing.Point(137, 96);
-			this.textBoxGameDirectory.Name = "textBoxGameDirectory";
-			this.textBoxGameDirectory.Size = new System.Drawing.Size(831, 33);
-			this.textBoxGameDirectory.TabIndex = 1;
-			// 
 			// buttonStart
 			// 
-			this.buttonStart.Location = new System.Drawing.Point(474, 158);
+			this.buttonStart.Location = new System.Drawing.Point(455, 88);
 			this.buttonStart.Name = "buttonStart";
 			this.buttonStart.Size = new System.Drawing.Size(118, 38);
 			this.buttonStart.TabIndex = 2;
@@ -65,22 +56,26 @@
 			this.buttonStart.UseVisualStyleBackColor = true;
 			this.buttonStart.Click += new System.EventHandler(this.buttonStart_Click);
 			// 
-			// buttonFolderDialog
+			// labelDirectory
 			// 
-			this.buttonFolderDialog.Image = ((System.Drawing.Image)(resources.GetObject("buttonFolderDialog.Image")));
-			this.buttonFolderDialog.Location = new System.Drawing.Point(98, 96);
-			this.buttonFolderDialog.Name = "buttonFolderDialog";
-			this.buttonFolderDialog.Size = new System.Drawing.Size(31, 32);
-			this.buttonFolderDialog.TabIndex = 3;
-			this.buttonFolderDialog.UseVisualStyleBackColor = true;
-			this.buttonFolderDialog.Click += new System.EventHandler(this.buttonFolderDialog_Click);
+			this.labelDirectory.AutoSize = true;
+			this.labelDirectory.BackColor = System.Drawing.SystemColors.ControlLightLight;
+			this.labelDirectory.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+			this.labelDirectory.Cursor = System.Windows.Forms.Cursors.Hand;
+			this.labelDirectory.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.labelDirectory.Location = new System.Drawing.Point(118, 29);
+			this.labelDirectory.MaximumSize = new System.Drawing.Size(831, 33);
+			this.labelDirectory.MinimumSize = new System.Drawing.Size(831, 33);
+			this.labelDirectory.Name = "labelDirectory";
+			this.labelDirectory.Size = new System.Drawing.Size(831, 33);
+			this.labelDirectory.TabIndex = 4;
+			this.labelDirectory.Click += new System.EventHandler(this.labelDirectory_Click);
 			// 
 			// Form1
 			// 
-			this.ClientSize = new System.Drawing.Size(1051, 494);
-			this.Controls.Add(this.buttonFolderDialog);
+			this.ClientSize = new System.Drawing.Size(1051, 428);
+			this.Controls.Add(this.labelDirectory);
 			this.Controls.Add(this.buttonStart);
-			this.Controls.Add(this.textBoxGameDirectory);
 			this.Controls.Add(this.labelStatus);
 			this.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
@@ -96,9 +91,8 @@
 		#endregion
 
 		private Label labelStatus;
-		private TextBox textBoxGameDirectory;
 		private Button buttonStart;
-		private Button buttonFolderDialog;
 		private FolderBrowserDialog folderBrowserDialog;
+		private Label labelDirectory;
 	}
 }

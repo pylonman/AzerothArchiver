@@ -57,18 +57,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="buttonFolderDialog.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6
-        JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAACXBIWXMAAA68AAAOvAGVvHJJAAAA2klE
-        QVQ4T9WQPwrCMBjF3xUcHR29haOzDp7AQShJewId9QJpqmcQXIV6CnfRVVBU3PU1/UMJacRJDPyglPf9
-        XvLh90cLHBOJl8U9lugVEf8xAyHadZTAkOKHJa3ISotxt+AjnCnG/QItMWLbs2y24TNTI1hJdBm82IHs
-        GXGEINtHHSURJgJzsjYCNoUM7+xgE5kgFtjye5wL8uFZPeRFIGLpeRmgk+9A4KYj9J1hB7zBgqWHaon8
-        mdohH2zfUKArgQoxdQWboGBPBqXgZJ7xBRy+qglaRvDvB3gDrfv1R/WNz5IAAAAASUVORK5CYII=
-</value>
-  </data>
   <metadata name="folderBrowserDialog.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
+  </metadata>
+  <metadata name="labelDirectory.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
   </metadata>
 </root>

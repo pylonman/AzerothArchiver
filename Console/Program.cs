@@ -1,9 +1,10 @@
 ﻿using Libs;
+using static System.Environment;			// Used to shorted Environment.NewLine and Environment.GetCommandLineArgs
 
 bool closeOnCompletion = false;
 bool configUpdateNeeded = false;
 
-foreach (var arg in Environment.GetCommandLineArgs())
+foreach (var arg in GetCommandLineArgs())
 {
 	if (arg == "quiet" || arg == "-q")                  // When finished close immediately
 	{
@@ -50,7 +51,7 @@ if (configUpdateNeeded)
 	}
 	catch (Exception ex)
 	{
-		Console.WriteLine($"Failed to save config file, reason:  {ex.Message}{Environment.NewLine}");
+		Console.WriteLine($"Failed to save config file, reason:  {ex.Message}{NewLine}");
 	}
 }
 
@@ -63,9 +64,9 @@ if (!closeOnCompletion)
 static string GetDirectoryFromUser()
 {
 	Console.WriteLine($"Enter the location of your World of Warcraft folder." +
-					$"{Environment.NewLine}" +
+					$"{NewLine}" +
 					$"\tExample:  C:\\World of Warcraft\\" +
-					$"{Environment.NewLine}");
+					$"{NewLine}");
 
 	var input = Console.ReadLine();
 	Console.WriteLine();
