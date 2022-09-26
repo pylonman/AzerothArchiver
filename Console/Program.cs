@@ -1,5 +1,5 @@
 ﻿using Libs;
-using static System.Environment;			// Used to shorted Environment.NewLine and Environment.GetCommandLineArgs
+using static System.Environment;			// Used to shorten Environment.NewLine and Environment.GetCommandLineArgs
 
 bool closeOnCompletion = false;
 bool configUpdateNeeded = false;

@@ -1,4 +1,5 @@
 using Libs;
+using System.Diagnostics;
 using static System.Environment;		// Used to shorten Environment.NewLine
 
 namespace WinForm
@@ -106,5 +107,32 @@ namespace WinForm
 				return;
 			}
 		}
-	}
+
+		private void buttonShowBackups_Click(object sender, EventArgs e)
+		{
+			if (!Directory.Exists(Globals.UserDirectory))
+			{
+				MessageBox.Show($"Failed to open backup directory:{NewLine}" +
+								$"\t{Globals.UserDirectory}{NewLine}" +
+								$"It does not exist.");
+				return;
+			}
+
+			ProcessStartInfo startInfo = new ProcessStartInfo
+			{
+				Arguments = Globals.UserDirectory,
+				FileName = "explorer.exe"
+			};
+
+			try
+			{
+				Process.Start(startInfo);
+			}
+			catch(Exception ex)
+			{
+				MessageBox.Show($"Failed to open explorer:{NewLine}" +
+								$"\t{ex.Message}");
+			}
+		}
+    }
 }

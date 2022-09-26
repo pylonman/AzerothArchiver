@@ -54,9 +54,9 @@
 
 			try
 			{
-				if (!Directory.Exists(UserDirectory))
+				if (!Directory.Exists(Globals.UserDirectory))
 				{
-					Directory.CreateDirectory(UserDirectory);
+					Directory.CreateDirectory(Globals.UserDirectory);
 				}
 				File.WriteAllLines(configFile, contents);
 			}
@@ -73,8 +73,7 @@
 
 		private const string fileName = "config.ini";
 		private const string directoryToken = "WarcraftDirectory=";
-		private static readonly string UserDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "AzerothArchiver");
-		private static string configFile { get; } = Path.Combine($"{UserDirectory}", fileName);
+		private static string configFile { get; } = Path.Combine($"{Globals.UserDirectory}", fileName);
 
 		/// <summary>
 		/// Checks that the GameDirectory is a valid World of Wardcraft location

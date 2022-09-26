@@ -32,6 +32,9 @@
 			this.buttonStart = new System.Windows.Forms.Button();
 			this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
 			this.labelDirectory = new System.Windows.Forms.Label();
+			this.buttonShowBackups = new System.Windows.Forms.Button();
+			this.label1 = new System.Windows.Forms.Label();
+			this.label2 = new System.Windows.Forms.Label();
 			this.SuspendLayout();
 			// 
 			// labelStatus
@@ -71,9 +74,42 @@
 			this.labelDirectory.TabIndex = 4;
 			this.labelDirectory.Click += new System.EventHandler(this.labelDirectory_Click);
 			// 
+			// buttonShowBackups
+			// 
+			this.buttonShowBackups.Location = new System.Drawing.Point(398, 420);
+			this.buttonShowBackups.Name = "buttonShowBackups";
+			this.buttonShowBackups.Size = new System.Drawing.Size(255, 38);
+			this.buttonShowBackups.TabIndex = 5;
+			this.buttonShowBackups.Text = "Open Backup Directory";
+			this.buttonShowBackups.UseVisualStyleBackColor = true;
+			this.buttonShowBackups.Click += new System.EventHandler(this.buttonShowBackups_Click);
+			// 
+			// label1
+			// 
+			this.label1.AutoSize = true;
+			this.label1.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+			this.label1.Location = new System.Drawing.Point(50, 128);
+			this.label1.Name = "label1";
+			this.label1.Size = new System.Drawing.Size(36, 21);
+			this.label1.TabIndex = 6;
+			this.label1.Text = "Log";
+			// 
+			// label2
+			// 
+			this.label2.AutoSize = true;
+			this.label2.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+			this.label2.Location = new System.Drawing.Point(118, 4);
+			this.label2.Name = "label2";
+			this.label2.Size = new System.Drawing.Size(114, 21);
+			this.label2.TabIndex = 7;
+			this.label2.Text = "Warcraft folder";
+			// 
 			// Form1
 			// 
-			this.ClientSize = new System.Drawing.Size(1051, 428);
+			this.ClientSize = new System.Drawing.Size(1051, 475);
+			this.Controls.Add(this.label2);
+			this.Controls.Add(this.label1);
+			this.Controls.Add(this.buttonShowBackups);
 			this.Controls.Add(this.labelDirectory);
 			this.Controls.Add(this.buttonStart);
 			this.Controls.Add(this.labelStatus);
@@ -94,5 +130,8 @@
 		private Button buttonStart;
 		private FolderBrowserDialog folderBrowserDialog;
 		private Label labelDirectory;
+		private Button buttonShowBackups;
+		private Label label1;
+		private Label label2;
 	}
 }
