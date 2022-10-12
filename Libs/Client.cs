@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Libs
+namespace Shared
 {
 	/// <summary>
 	/// Detects and stores the game client type and associated directory 
@@ -69,23 +69,24 @@ namespace Libs
 
 			foreach (var token in tokens.Reverse())
 			{
-				if (typeToDirectory.TryGetValue(token, out var directoryMatch))
+				if (nameToDirectory.TryGetValue(token, out var match))
 				{
-					return directoryMatch;
+					return match;
 				}
 			}
 			return String.Empty;
 		}
 
 		/// <summary>
-		/// Associates the client type found in the .build.info file with the client directory name
+		/// Associates the client name found in the .build.info file with the client directory name
 		/// </summary>
-		private static readonly Dictionary<string, string> typeToDirectory = new()
+		private static readonly Dictionary<string, string> nameToDirectory = new()
 		{
-			{ "wow",                "_retail_" },					// retail
-			{ "wowt",               "_ptr_"},						// retail ptr
+			{ "wow",                "_retail_"},					// retail
+			{ "wowt",               "_ptr_"},                       // retail ptr
+			{ "wow_beta",			"_beta_"},						// beta
 			{ "wow_classic_era",    "_classic_era_"},				// classic vanilla
-			{ "wow_classic",        "_classic_"},					// classic TBC
+			{ "wow_classic",        "_classic_"},					// classic Wrath
 		};
 
 		private const char separator = '|';

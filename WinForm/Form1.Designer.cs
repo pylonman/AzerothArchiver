@@ -35,6 +35,7 @@
 			this.buttonShowBackups = new System.Windows.Forms.Button();
 			this.label1 = new System.Windows.Forms.Label();
 			this.label2 = new System.Windows.Forms.Label();
+			this.buttonAboutMe = new System.Windows.Forms.Button();
 			this.SuspendLayout();
 			// 
 			// labelStatus
@@ -104,9 +105,20 @@
 			this.label2.TabIndex = 7;
 			this.label2.Text = "Warcraft folder";
 			// 
+			// buttonAboutMe
+			// 
+			this.buttonAboutMe.Location = new System.Drawing.Point(894, 420);
+			this.buttonAboutMe.Name = "buttonAboutMe";
+			this.buttonAboutMe.Size = new System.Drawing.Size(106, 38);
+			this.buttonAboutMe.TabIndex = 8;
+			this.buttonAboutMe.Text = "About Me";
+			this.buttonAboutMe.UseVisualStyleBackColor = true;
+			this.buttonAboutMe.Click += new System.EventHandler(this.buttonAboutMe_Click);
+			// 
 			// Form1
 			// 
 			this.ClientSize = new System.Drawing.Size(1051, 475);
+			this.Controls.Add(this.buttonAboutMe);
 			this.Controls.Add(this.label2);
 			this.Controls.Add(this.label1);
 			this.Controls.Add(this.buttonShowBackups);
@@ -133,5 +145,6 @@
 		private Button buttonShowBackups;
 		private Label label1;
 		private Label label2;
+		private Button buttonAboutMe;
 	}
 }

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Libs
+namespace Shared
 {
 	/// <summary>
 	/// Finds the installed game clients by reading the .build.info file

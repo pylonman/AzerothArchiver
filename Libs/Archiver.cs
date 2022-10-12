@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Libs
+namespace Shared
 {
 	/// <summary>
 	/// Takes a source and client directory, compresses the contents of the client and saves it to the destination folder
@@ -33,7 +33,7 @@ namespace Libs
 		/// <summary>
 		/// Perform data compression copy the zip file to the user folder
 		/// </summary>
-		private void Begin()
+		private void Compress()
 		{
 			if (File.Exists(DestinationFile))
 			{
@@ -69,7 +69,6 @@ namespace Libs
 					status.AppendLine("Error:  The path to the configuration folder does not exist, a backup cannot be made.");
 					continue;
 				}
-				Console.WriteLine();
 
 				var ar = new Archiver(configDirectory, client.DirectoryName);
 
@@ -78,7 +77,7 @@ namespace Libs
 
 				try
 				{
-					ar.Begin();
+					ar.Compress();
 					status.AppendLine($"Completed Archiving client: {client.DirectoryName}");
 				}
 				catch (Exception ex)

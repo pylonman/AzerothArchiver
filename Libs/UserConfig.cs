@@ -1,4 +1,4 @@
-﻿namespace Libs
+﻿namespace Shared
 {
 	/// <summary>
 	/// Gets the World of Warcraft install directory and saves the configuration

@@ -1,4 +1,4 @@
-using Libs;
+using Shared;
 using System.Diagnostics;
 using static System.Environment;		// Used to shorten Environment.NewLine
 
@@ -110,29 +110,17 @@ namespace WinForm
 
 		private void buttonShowBackups_Click(object sender, EventArgs e)
 		{
-			if (!Directory.Exists(Globals.UserDirectory))
-			{
-				MessageBox.Show($"Failed to open backup directory:{NewLine}" +
-								$"\t{Globals.UserDirectory}{NewLine}" +
-								$"It does not exist.");
-				return;
-			}
+			string status = Globals.OpenBackupDirectory();
 
-			ProcessStartInfo startInfo = new ProcessStartInfo
+			if (!string.IsNullOrEmpty(status))
 			{
-				Arguments = Globals.UserDirectory,
-				FileName = "explorer.exe"
-			};
-
-			try
-			{
-				Process.Start(startInfo);
-			}
-			catch(Exception ex)
-			{
-				MessageBox.Show($"Failed to open explorer:{NewLine}" +
-								$"\t{ex.Message}");
+				MessageBox.Show(status);
 			}
 		}
-    }
+
+		private void buttonAboutMe_Click(object sender, EventArgs e)
+		{
+			MessageBox.Show(Globals.AboutMe);
+		}
+	}
 }

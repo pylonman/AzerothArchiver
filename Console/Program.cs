@@ -1,8 +1,9 @@
-﻿using Libs;
-using static System.Environment;			// Used to shorten Environment.NewLine and Environment.GetCommandLineArgs
+﻿using Shared;
+using static System.Environment;            // Used to shorten Environment.NewLine and Environment.GetCommandLineArgs
 
-bool closeOnCompletion = false;
-bool configUpdateNeeded = false;
+Console.WriteLine(Globals.AboutMe);
+
+bool closeOnCompletion = false;				// Leave app open when all operations have completed, otherwise let app close normally
 
 foreach (var arg in GetCommandLineArgs())
 {
@@ -12,53 +13,16 @@ foreach (var arg in GetCommandLineArgs())
 	}
 }
 
-UserConfig? config = null;
-
-try
-{
-	config = new UserConfig();          // Get configuration from config file
-}
-catch (Exception ex)
-{
-	Console.WriteLine(ex.Message);
-}
-
-while(config == null)                   // On failure get config from user
-{
-	string input = GetDirectoryFromUser();
-
-	try
-	{
-		config = new UserConfig(input);
-		configUpdateNeeded = true;
-		Console.WriteLine("Verified World of Warcraft directory");
-	}
-	catch(Exception ex)
-	{
-		Console.WriteLine($"Invalid path.  {ex.Message}");
-	}
-}
+var config = GetConfig();
 
 var clients = Client.GetList(config.GameDirectory);
 
-Console.WriteLine(Archiver.Start(clients, config.GameDirectory));   // Archive clients, print status
-
-if (configUpdateNeeded)
-{
-	try
-	{
-		config.UpdateFile();
-	}
-	catch (Exception ex)
-	{
-		Console.WriteLine($"Failed to save config file, reason:  {ex.Message}{NewLine}");
-	}
-}
+string status = Archiver.Start(clients, config.GameDirectory);
+Console.WriteLine(status);   // Archive clients, print status
 
 if (!closeOnCompletion)
 {
-	Console.WriteLine("Press any key to quit");
-	Console.ReadKey();
+	WaitForKeyPress();
 }
 
 static string GetDirectoryFromUser()
@@ -74,4 +38,60 @@ static string GetDirectoryFromUser()
 	input ??= String.Empty;
 
 	return input;
+}
+
+UserConfig GetConfig()
+{
+	UserConfig? config = null;
+	bool configUpdateNeeded = false;
+
+	try
+	{
+		config = new UserConfig();          // Get configuration from config file
+	}
+	catch (Exception ex)
+	{
+		Console.WriteLine(ex.Message);
+	}
+
+	while (config == null)                   // On failure get config from user
+	{
+		string input = GetDirectoryFromUser();
+
+		try
+		{
+			config = new UserConfig(input);
+			configUpdateNeeded = true;
+			Console.WriteLine("Verified World of Warcraft directory");
+		}
+		catch (Exception ex)
+		{
+			Console.WriteLine($"Invalid path.  {ex.Message}");
+		}
+	}
+
+	if (configUpdateNeeded)
+	{
+		try
+		{
+			config.UpdateFile();
+		}
+		catch (Exception ex)
+		{
+			Console.WriteLine($"Failed to save config file, reason:  {ex.Message}{NewLine}");
+		}
+	}
+
+	return config;
+}
+
+void WaitForKeyPress()
+{
+	Console.WriteLine("Press 'e' to open the backup folder in explorer, press any other key to quit");
+	var input = Console.ReadKey().KeyChar;
+
+	if (input == 'e')
+	{
+		Globals.OpenBackupDirectory();
+	}
 }
