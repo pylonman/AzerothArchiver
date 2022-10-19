@@ -95,18 +95,14 @@
 		/// <returns></returns>
 		private static string getDirectory()
 		{
-			var contents = File.ReadAllLines(configFile);
+			var lines = File.ReadAllLines(configFile);
 
-			foreach (var line in contents)
+			foreach (var line in lines)
 			{
 				if (line.StartsWith(directoryToken))
 				{
 					string result = line.Replace(directoryToken, string.Empty);
 					return result.TrimEnd('\\');
-				}
-				else
-				{
-					continue;
 				}
 			}
 
