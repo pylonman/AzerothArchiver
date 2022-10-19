@@ -10,7 +10,7 @@ namespace Shared
 	/// <summary>
 	/// Takes a source and client directory, compresses the contents of the client and saves it to the destination folder
 	/// </summary>
-	public class Archiver
+	sealed public class Archiver
 	{
 		private Archiver(string wowDirectory, string clientDirectory)
 		{

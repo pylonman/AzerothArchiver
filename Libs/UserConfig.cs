@@ -3,7 +3,7 @@
 	/// <summary>
 	/// Gets the World of Warcraft install directory and saves the configuration
 	/// </summary>
-	public class UserConfig
+	sealed public class UserConfig
 	{
 		/// <summary>
 		/// Get directory from the config file

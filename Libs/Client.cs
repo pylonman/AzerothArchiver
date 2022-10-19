@@ -9,7 +9,7 @@ namespace Shared
 	/// <summary>
 	/// Detects and stores the game client type and associated directory 
 	/// </summary>
-	public class Client
+	sealed public class Client
 	{
 		public Client(string buildInfoLine)
 		{
