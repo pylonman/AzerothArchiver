@@ -17,7 +17,7 @@ namespace Shared
 					   $"It does not exist.";
 			}
 
-			ProcessStartInfo startInfo = new ProcessStartInfo
+			ProcessStartInfo startInfo = new()
 			{
 				Arguments = Globals.UserDirectory,
 				FileName = "explorer.exe"

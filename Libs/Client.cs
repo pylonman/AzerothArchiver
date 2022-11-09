@@ -30,7 +30,7 @@ namespace Shared
 		/// <summary>
 		/// The name of the client directory associated with the client type
 		/// </summary>
-		public string DirectoryName { get; }
+		public string DirectoryName { get; init; }
 
 		/// <summary>
 		/// Returns a list of clients detected from the directory parameter

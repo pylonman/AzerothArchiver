@@ -42,9 +42,9 @@ namespace Shared
 			ZipFile.CreateFromDirectory(Source, DestinationFile);
 		}
 
-		public string Source { get; }
-		public string Destination { get; }
-		public string DestinationFile { get; }
+		public string Source { get; init; }
+		public string Destination { get; init; }
+		public string DestinationFile { get; init; }
 
 		private readonly string backupDirectory = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
 		private const string programName = "AzerothArchiver";

@@ -69,7 +69,7 @@
 		/// <summary>
 		/// World of Warcraft install location
 		/// </summary>
-		public string GameDirectory { get; }
+		public string GameDirectory { get; init; }
 
 		private const string fileName = "config.ini";
 		private const string directoryToken = "WarcraftDirectory=";
