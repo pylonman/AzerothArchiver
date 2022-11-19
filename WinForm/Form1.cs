@@ -38,7 +38,7 @@ namespace WinForm
 			labelStatus.Text = string.Empty;
 
 
-			if (Config == null)
+			if (Config is null)
 			{
 				MessageBox.Show("No valid World of Warcraft directory entered.");
 				buttonStart.Enabled = true;
@@ -96,7 +96,7 @@ namespace WinForm
 		/// <param name="e"></param>
 		private void Form1_FormClosing(object sender, FormClosingEventArgs e)
 		{
-			if (Config == null) return;
+			if (Config is null) return;
 
 			try
 			{

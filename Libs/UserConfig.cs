@@ -29,7 +29,7 @@
 		/// <param name="gameDirectoryFromUser"></param>
 		public UserConfig(string gameDirectoryFromUser)
 		{
-			if (gameDirectoryFromUser == null)
+			if (gameDirectoryFromUser is null)
 			{
 				throw new ArgumentNullException(gameDirectoryFromUser, $"The Warcraft directory parameter is null");
 			}

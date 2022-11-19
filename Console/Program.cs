@@ -54,7 +54,7 @@ UserConfig GetConfig()
 		Console.WriteLine(ex.Message);
 	}
 
-	while (config == null)                   // On failure get config from user
+	while (config is null)                   // On failure get config from user
 	{
 		string input = GetDirectoryFromUser();
 
