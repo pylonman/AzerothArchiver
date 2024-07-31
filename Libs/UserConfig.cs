@@ -15,11 +15,27 @@
 				throw new FileNotFoundException("The config file does not exist, input required from the user.");
 			}
 
-			GameDirectory = getDirectory() ?? throw new ArgumentNullException(GameDirectory, "The Warcraft directory value from the config file is null");
+			var lines = File.ReadAllLines(configFile);		// read and parse file
+
+			foreach (var line in lines)
+			{
+				if (line.StartsWith(directoryToken))
+				{
+					string result = line.Replace(directoryToken, string.Empty).TrimEnd('\\');
+					try
+					{
+						GameDirectory = new NonEmptyString(result);
+					}
+					catch (Exception)
+					{ 
+						throw new ArgumentException($"The Warcraft directory argument from the config file is empty.");
+					}
+				}
+			}
 
 			if (!gameDirectoryIsValid())
 			{
-				throw new ArgumentException($"The Warcraft directory argument from the config file is not valid:  {GameDirectory}");
+				throw new ArgumentException($"The Warcraft directory from the config file is not valid:  {GameDirectory}");
 			}
 		}
 
@@ -27,18 +43,21 @@
 		/// Get directory from user
 		/// </summary>
 		/// <param name="gameDirectoryFromUser"></param>
-		public UserConfig(string gameDirectoryFromUser)
+		public UserConfig(NonEmptyString gameDirectoryFromUser)
 		{
-			if (gameDirectoryFromUser is null)
-			{
-				throw new ArgumentNullException(gameDirectoryFromUser, $"The Warcraft directory parameter is null");
-			}
-
-			GameDirectory = gameDirectoryFromUser.TrimEnd('\\');
-
+			GameDirectory = gameDirectoryFromUser;
+			
 			if (!gameDirectoryIsValid())
 			{
 				throw new ArgumentException($"The Warcraft directory parameter is not valid:  {GameDirectory}");
+			}
+			try
+			{
+				UpdateFile();
+			}
+			catch (IOException)
+			{
+				// silently fail on saving config for now
 			}
 		}
 
@@ -49,7 +68,7 @@
 		{
 			string[] contents =
 			{
-				$"{directoryToken}{GameDirectory}{Environment.NewLine}",
+				$"{directoryToken}{GameDirectory.value}{Environment.NewLine}",
 			};
 
 			try
@@ -69,7 +88,7 @@
 		/// <summary>
 		/// World of Warcraft install location
 		/// </summary>
-		public string GameDirectory { get; init; }
+		public NonEmptyString GameDirectory { get; init; }
 
 		private const string fileName = "config.ini";
 		private const string directoryToken = "WarcraftDirectory=";
@@ -81,32 +100,12 @@
 		/// <returns></returns>
 		private bool gameDirectoryIsValid()
 		{
-			if (Directory.Exists(GameDirectory) && GameDirectory.EndsWith("World of Warcraft"))
+			if (Directory.Exists(GameDirectory) && GameDirectory.value.EndsWith("World of Warcraft"))
 			{
 				return true;
 			}
 
 			return false;
-		}
-
-		/// <summary>
-		/// Gets the GameDirectory from the config file
-		/// </summary>
-		/// <returns></returns>
-		private static string getDirectory()
-		{
-			var lines = File.ReadAllLines(configFile);
-
-			foreach (var line in lines)
-			{
-				if (line.StartsWith(directoryToken))
-				{
-					string result = line.Replace(directoryToken, string.Empty);
-					return result.TrimEnd('\\');
-				}
-			}
-
-			return string.Empty;
 		}
 	}
 }

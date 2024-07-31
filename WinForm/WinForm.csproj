@@ -2,22 +2,23 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net7.0-windows</TargetFramework>
-	<IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
-	<EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
-    <Nullable>enable</Nullable>
+    <TargetFramework>net8.0-windows</TargetFramework>
+	<PublishAot>false</PublishAot>
+	<_SuppressWinFormsTrimError>false</_SuppressWinFormsTrimError>
     <UseWindowsForms>true</UseWindowsForms>
-    <ImplicitUsings>enable</ImplicitUsings>
+	<PublishSingleFile>true</PublishSingleFile>
+	<ImplicitUsings>enable</ImplicitUsings>
+	<Nullable>enable</Nullable>
     <AssemblyName>Azeroth Archiver WinForm</AssemblyName>
     <NeutralLanguage>en</NeutralLanguage>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DebugType>none</DebugType>
+    <DebugType>embedded</DebugType>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DebugType>none</DebugType>
+    <DebugType>embedded</DebugType>
   </PropertyGroup>
 
   <ItemGroup>

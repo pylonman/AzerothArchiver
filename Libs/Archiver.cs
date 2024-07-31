@@ -12,11 +12,11 @@ namespace Shared
 	/// </summary>
 	sealed public class Archiver
 	{
-		private Archiver(string wowDirectory, string clientDirectory)
+		private Archiver(NonEmptyString wowDirectory, Client client)
 		{
 			Source = wowDirectory;
 
-			Destination = Path.Combine(backupDirectory, programName, clientDirectory);
+			Destination = new NonEmptyString(Path.Combine(backupDirectory, programName, client.DirectoryName));
 			if (!Directory.Exists(Destination))
 			{
 				Directory.CreateDirectory(Destination);
@@ -24,10 +24,10 @@ namespace Shared
 
 			// create filename based on the date
 			var dt = DateTime.Now;
-			string fileName = dt.ToString("MM-dd-yyyy") + ".zip";
+			var fileName = new NonEmptyString(dt.ToString("MM-dd-yyyy") + ".zip");
 
 			// Combine destination path with the filename
-			DestinationFile = Path.Combine(Destination, fileName);
+			DestinationFile = new NonEmptyString(Path.Combine(Destination, fileName));
 		}
 
 		/// <summary>
@@ -42,9 +42,9 @@ namespace Shared
 			ZipFile.CreateFromDirectory(Source, DestinationFile);
 		}
 
-		public string Source { get; init; }
-		public string Destination { get; init; }
-		public string DestinationFile { get; init; }
+		public NonEmptyString Source { get; init; }
+		public NonEmptyString Destination { get; init; }
+		public NonEmptyString DestinationFile { get; init; }
 
 		private readonly string backupDirectory = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
 		private const string programName = "AzerothArchiver";
@@ -61,7 +61,7 @@ namespace Shared
 
 			foreach (var client in clients)
 			{
-				string configDirectory = Path.Combine(warcraftDirectory, client.DirectoryName, "WTF");
+				var configDirectory = new NonEmptyString(Path.Combine(warcraftDirectory, client.DirectoryName, "WTF"));
 
 
 				if (!Directory.Exists(configDirectory))
@@ -70,19 +70,19 @@ namespace Shared
 					continue;
 				}
 
-				var ar = new Archiver(configDirectory, client.DirectoryName);
+				var ar = new Archiver(configDirectory, client);
 
-				status.AppendLine($"Backing up:   {ar.Source}{Environment.NewLine}" +
-									$"To:           {ar.DestinationFile}");
+				status.AppendLine($"Backing up:   {ar.Source.value}{Environment.NewLine}" +
+									$"To:           {ar.DestinationFile.value}");
 
 				try
 				{
 					ar.Compress();
-					status.AppendLine($"Completed Archiving client: {client.DirectoryName}");
+					status.AppendLine($"Completed Archiving client: {client.DirectoryName.Value}");
 				}
 				catch (Exception ex)
 				{
-					status.AppendLine($"Failed to backup client: {client.DirectoryName}{Environment.NewLine}" +
+					status.AppendLine($"Failed to backup client: {client.DirectoryName.Value}{Environment.NewLine}" +
 										$"Reason:  {ex.Message}");
 				}
 			}

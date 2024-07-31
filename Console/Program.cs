@@ -15,74 +15,64 @@ foreach (var arg in GetCommandLineArgs())
 
 var config = GetConfig();
 
-var clients = Client.GetList(config.GameDirectory);
+List<Client> clients;
+try
+{
+	clients = BuildInfoParser.GetClients(config);
+}
+catch (Exception ex)
+{
+	Console.WriteLine(ex.ToString());
+	WaitForKeyPress();
+	return;
+}
 
-string status = Archiver.Start(clients, config.GameDirectory);
-Console.WriteLine(status);   // Archive clients, print status
+var status = Archiver.Start(clients, config.GameDirectory);  // Archive clients, print status
+Console.WriteLine(status);   
 
 if (!closeOnCompletion)
 {
 	WaitForKeyPress();
 }
 
-static string GetDirectoryFromUser()
-{
-	Console.WriteLine($"Enter the location of your World of Warcraft folder." +
-					$"{NewLine}" +
-					$"\tExample:  C:\\World of Warcraft\\" +
-					$"{NewLine}");
-
-	var input = Console.ReadLine();
-	Console.WriteLine();
-
-	input ??= String.Empty;
-
-	return input;
-}
-
 UserConfig GetConfig()
 {
-	UserConfig? config = null;
-	bool configUpdateNeeded = false;
-
 	try
 	{
-		config = new UserConfig();          // Get configuration from config file
+		return new UserConfig();
 	}
 	catch (Exception ex)
 	{
 		Console.WriteLine(ex.Message);
+		return GetConfigFromUser();
 	}
+}
 
-	while (config is null)                   // On failure get config from user
+UserConfig GetConfigFromUser()
+{
+	while (true)
 	{
-		string input = GetDirectoryFromUser();
-
+		//string input = QueryUser();
 		try
 		{
-			config = new UserConfig(input);
-			configUpdateNeeded = true;
-			Console.WriteLine("Verified World of Warcraft directory");
+			NonEmptyString input = QueryUser();
+			return new UserConfig(input);
 		}
 		catch (Exception ex)
 		{
-			Console.WriteLine($"Invalid path.  {ex.Message}");
+			Console.WriteLine($"Invalid path. {ex.Message}");
 		}
 	}
+}
 
-	if (configUpdateNeeded)
-	{
-		try
-		{
-			config.UpdateFile();
-		}
-		catch (Exception ex)
-		{
-			Console.WriteLine($"Failed to save config file, reason:  {ex.Message}{NewLine}");
-		}
-	}
+static NonEmptyString QueryUser()
+{
+	Console.WriteLine("Enter the location of your World of Warcraft folder:");
+	Console.WriteLine("\tExample: C:\\World of Warcraft\\");
 
-	return config;
+	//var input = Console.ReadLine()?.Trim() ?? string.Empty;
+	//Console.WriteLine();
+	return new NonEmptyString(Console.ReadLine()?.Trim().TrimEnd('\\') ?? string.Empty);
 }
 
 void WaitForKeyPress()

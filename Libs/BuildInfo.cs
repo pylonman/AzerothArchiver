@@ -3,46 +3,52 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
+using static System.Environment;            // Used to shorten Environment.NewLine and Environment.GetCommandLineArgs
 
 namespace Shared
 {
 	/// <summary>
 	/// Finds the installed game clients by reading the .build.info file
 	/// </summary>
-	public static class BuildInfo
+	public static class BuildInfoParser
 	{
 		/// <summary>
-		/// Returns a list of game clients found in the .build.info file in the wowDirectory
+		/// Returns all detected clients from the .build.info file
 		/// </summary>
-		/// <param name="gameDirectory"></param>
+		/// <param name="config"></param>
 		/// <returns></returns>
-		public static List<string> ReadClientLines(string gameDirectory)
+		/// <exception cref="FileNotFoundException"></exception>
+		public static List<Client> GetClients(UserConfig config)
 		{
-			string file = Path.Combine(gameDirectory, fileName);
-
-			if (!File.Exists(file))
+			string filePath = Path.Combine(config.GameDirectory, fileName);
+			
+			if (!File.Exists(filePath))
 			{
-				throw new FileNotFoundException("Error:  No .build.info file was found in the World of Warcraft directory.");
+				throw new FileNotFoundException($"Error: .build.info file not found at {filePath}");
 			}
 
-			List<string> fileContents;
+			var clients = new List<Client>();
 
-			try
+			var lines = File.ReadLines(filePath).Skip(1);               // skip the header
+			foreach (var line in lines)                                 // each line contains data associated with the clients that are installed
 			{
-				fileContents = File.ReadAllLines(file).ToList();
-			}
-			catch
-			{
-				throw new Exception("Error reading the .build.info file.");
+				string[] parts = line.Split('|');						// each element contains a '|' separator
+				if (parts.Length > 0)
+				{
+					try
+					{
+						NonEmptyString clientName = new(parts[^1].Trim());  // store the last element of the .build.info line - the product(client) string
+						clients.Add(new Client(clientName));
+					}
+					catch(Exception)		// Invalid or unsupported client detected on this line, silently fail for now
+					{
+						continue;
+					}
+				}
 			}
 
-			if (fileContents.Count < 2)             // if there are less than 2 entries in the buildinfo file then there is no useful data available
-			{
-				throw new Exception("Error:  The .build.info file does not contain any valid game clients.");
-			}
-
-			fileContents.RemoveAt(0);               // remove the header from the .build.info file
-			return fileContents;
+			return clients;
 		}
 
 		private const string fileName = ".build.info";

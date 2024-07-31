@@ -6,8 +6,12 @@ namespace Shared
 	public static class Globals
 	{
 		public static readonly string UserDirectory = Path.Combine(GetFolderPath(SpecialFolder.UserProfile), "AzerothArchiver");
-		public static readonly string AboutMe = $"Azeroth Archiver is made by Felicene from Alleria{NewLine}" +
+		public static readonly string AboutMe = $"Azeroth Archiver is made by Felicine from Alleria{NewLine}" +
 												$"Website:  https://github.com/pylonman/AzerothArchiver{NewLine}";
+		/// <summary>
+		/// Spawn an exploer process to display the directory where the game files are backed up to
+		/// </summary>
+		/// <returns></returns>
 		public static string OpenBackupDirectory()
 		{
 			if (!Directory.Exists(Globals.UserDirectory))

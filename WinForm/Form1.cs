@@ -49,12 +49,12 @@ namespace WinForm
 
 			try
 			{
-				clients = Client.GetList(Config.GameDirectory);
+				clients = BuildInfoParser.GetClients(Config);
 			}
 			catch (Exception ex)
 			{
 				MessageBox.Show($"An error occurred while attempting to parse the .build.info file from :" +
-								$"{Config.GameDirectory}{NewLine}{NewLine}" +
+								$"{Config.GameDirectory.value}{NewLine}{NewLine}" +
 								$"{ex.Message}{NewLine}");
 				Config = null;
 				labelDirectory.BackColor = Color.Red;
@@ -77,7 +77,8 @@ namespace WinForm
 
 			try
 			{
-				Config = new UserConfig(folderBrowserDialog.SelectedPath);
+				NonEmptyString path = new(folderBrowserDialog.SelectedPath);
+				Config = new UserConfig(path);
 				labelDirectory.BackColor = Color.LightGreen;
 				labelDirectory.Text = Config.GameDirectory;
 			}

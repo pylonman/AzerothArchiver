@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net7.0-windows</TargetFramework>
+    <TargetFramework>net8.0-windows</TargetFramework>
 	<PublishAot>true</PublishAot>
 	<PublishTrimmed>true</PublishTrimmed>
     <ImplicitUsings>enable</ImplicitUsings>
@@ -9,11 +9,14 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DebugType>none</DebugType>
+    <DebugType>embedded</DebugType>
+    <Optimize>False</Optimize>
+    <WarningLevel>7</WarningLevel>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DebugType>none</DebugType>
+    <DebugType>embedded</DebugType>
+    <WarningLevel>7</WarningLevel>
   </PropertyGroup>
 
 </Project>
