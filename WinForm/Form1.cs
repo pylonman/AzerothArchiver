@@ -32,41 +32,23 @@ namespace WinForm
 			}
 		}
 
-		private void buttonStart_Click(object sender, EventArgs e)
+		private void ButtonBackup_Click(object sender, EventArgs e)
 		{
-			buttonStart.Enabled = false;
-			labelStatus.Text = string.Empty;
-
-
-			if (Config is null)
-			{
-				MessageBox.Show("No valid World of Warcraft directory entered.");
-				buttonStart.Enabled = true;
-				return;
-			}
+			this.Enabled = false;		// disable input while running
 
 			List<Client> clients;
+			bool ready;
+			(clients, ready) = CheckIfReady();
 
-			try
+			if (ready)
 			{
-				clients = BuildInfoParser.GetClients(Config);
-			}
-			catch (Exception ex)
-			{
-				MessageBox.Show($"An error occurred while attempting to parse the .build.info file from :" +
-								$"{Config.GameDirectory.value}{NewLine}{NewLine}" +
-								$"{ex.Message}{NewLine}");
-				Config = null;
-				labelDirectory.BackColor = Color.Red;
-				buttonStart.Enabled = true;
-				return;
+				labelStatus.Text = Archiver.Start(clients, Config.GameDirectory);   // Archive clients, return and print status
 			}
 
-			labelStatus.Text = Archiver.Start(clients, Config.GameDirectory);   // Archive clients, return and print status
-			buttonStart.Enabled = true;
+			this.Enabled = true;
 		}
 
-		private void labelDirectory_Click(object sender, EventArgs e)
+		private void LabelDirectory_Click(object sender, EventArgs e)
 		{
 			var result = folderBrowserDialog.ShowDialog();
 
@@ -103,15 +85,15 @@ namespace WinForm
 			{
 				Config.UpdateFile();
 			}
-			catch(Exception)		// Silently fail and let form close
+			catch (Exception)       // Silently fail and let form close
 			{
 				return;
 			}
 		}
 
-		private void buttonShowBackups_Click(object sender, EventArgs e)
+		private void ButtonShowBackups_Click(object sender, EventArgs e)
 		{
-			string status = Globals.OpenBackupDirectory();
+			string status = Archiver.OpenBackupDirectory();
 
 			if (!string.IsNullOrEmpty(status))
 			{
@@ -119,9 +101,43 @@ namespace WinForm
 			}
 		}
 
-		private void buttonAboutMe_Click(object sender, EventArgs e)
+		private void ButtonAboutMe_Click(object sender, EventArgs e)
 		{
 			MessageBox.Show(Globals.AboutMe);
+		}
+
+		private void ButtonRestore_Click(object sender, EventArgs e)
+		{
+
+		}
+
+		private (List<Client>, bool) CheckIfReady()
+		{
+			labelStatus.Text = string.Empty;
+
+			if (Config is null)
+			{
+				MessageBox.Show("No valid World of Warcraft directory entered.");
+				return (new List<Client>(), false);
+			}
+
+			List<Client> clients;
+
+			try
+			{
+				clients = BuildInfoParser.GetClients(Config);
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show($"An error occurred while attempting to parse the .build.info file from :" +
+								$"{Config.GameDirectory.value}{NewLine}{NewLine}" +
+								$"{ex.Message}{NewLine}");
+				Config = null;
+				labelDirectory.BackColor = Color.Red;
+				return (new List<Client>(), false);
+			}
+
+			return (clients, true);
 		}
 	}
 }

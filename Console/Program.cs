@@ -52,7 +52,6 @@ UserConfig GetConfigFromUser()
 {
 	while (true)
 	{
-		//string input = QueryUser();
 		try
 		{
 			NonEmptyString input = QueryUser();
@@ -70,8 +69,6 @@ static NonEmptyString QueryUser()
 	Console.WriteLine("Enter the location of your World of Warcraft folder:");
 	Console.WriteLine("\tExample: C:\\World of Warcraft\\");
 
-	//var input = Console.ReadLine()?.Trim() ?? string.Empty;
-	//Console.WriteLine();
 	return new NonEmptyString(Console.ReadLine()?.Trim().TrimEnd('\\') ?? string.Empty);
 }
 
@@ -82,6 +79,6 @@ void WaitForKeyPress()
 
 	if (input == 'e')
 	{
-		Globals.OpenBackupDirectory();
+		Archiver.OpenBackupDirectory();
 	}
 }

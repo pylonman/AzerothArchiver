@@ -3,9 +3,9 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>net8.0-windows</TargetFramework>
-	<PublishAot>false</PublishAot>
-	<PublishTrimmed>false</PublishTrimmed>
-	<PublishSingleFile>true</PublishSingleFile>
+	<PublishAot>true</PublishAot>
+	<PublishTrimmed>true</PublishTrimmed>
+	<PublishSingleFile>false</PublishSingleFile>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <AssemblyName>Azeroth Archiver Console</AssemblyName>

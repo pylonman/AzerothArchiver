@@ -4,9 +4,10 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>net8.0-windows</TargetFramework>
 	<PublishAot>false</PublishAot>
-	<_SuppressWinFormsTrimError>false</_SuppressWinFormsTrimError>
     <UseWindowsForms>true</UseWindowsForms>
-	<PublishSingleFile>true</PublishSingleFile>
+	<PublishSingleFile>false</PublishSingleFile>
+    <PublishTrimmed>false</PublishTrimmed>
+	<_SuppressWinFormsTrimError>true</_SuppressWinFormsTrimError>
 	<ImplicitUsings>enable</ImplicitUsings>
 	<Nullable>enable</Nullable>
     <AssemblyName>Azeroth Archiver WinForm</AssemblyName>

@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO.Compression;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Environment;        // Used to shorten NewLine, GetFolderPath, SpecialFolder
 
 namespace Shared
 {
@@ -46,7 +48,7 @@ namespace Shared
 		public NonEmptyString Destination { get; init; }
 		public NonEmptyString DestinationFile { get; init; }
 
-		private readonly string backupDirectory = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+		private readonly string backupDirectory = GetFolderPath(SpecialFolder.UserProfile);
 		private const string programName = "AzerothArchiver";
 
 		/// <summary>
@@ -57,7 +59,7 @@ namespace Shared
 		/// <returns></returns>
 		public static string Start(List<Client> clients, string warcraftDirectory)
 		{
-			var status = new StringBuilder($"*** Begin Backup Operation ***{Environment.NewLine}");
+			var status = new StringBuilder($"*** Begin Backup Operation ***{NewLine}");
 
 			foreach (var client in clients)
 			{
@@ -72,23 +74,53 @@ namespace Shared
 
 				var ar = new Archiver(configDirectory, client);
 
-				status.AppendLine($"Backing up:   {ar.Source.value}{Environment.NewLine}" +
+				status.AppendLine(	$"Backing up:   {ar.Source.value}{NewLine}" +
 									$"To:           {ar.DestinationFile.value}");
 
 				try
 				{
 					ar.Compress();
-					status.AppendLine($"Completed Archiving client: {client.DirectoryName.Value}");
+					status.AppendLine(	$"Completed Archiving client: {client.DirectoryName.Value}");
 				}
 				catch (Exception ex)
 				{
-					status.AppendLine($"Failed to backup client: {client.DirectoryName.Value}{Environment.NewLine}" +
+					status.AppendLine(	$"Failed to backup client: {client.DirectoryName.Value}{NewLine}" +
 										$"Reason:  {ex.Message}");
 				}
 			}
 
 			status.AppendLine("*** End of Backup Operation ***");
 			return status.ToString();
+		}
+		/// <summary>
+		/// Spawn an exploer process to the directory where the game files are backed up
+		/// </summary>
+		/// <returns></returns>
+		public static string OpenBackupDirectory()
+		{
+			if (!Directory.Exists(Globals.UserDirectory))
+			{
+				return $"Failed to open backup directory:{NewLine}" +
+					   $"\t{Globals.UserDirectory}{NewLine}" +
+					   $"It does not exist.";
+			}
+
+			ProcessStartInfo startInfo = new()
+			{
+				Arguments = Globals.UserDirectory, FileName = "explorer.exe"
+			};
+
+			try
+			{
+				Process.Start(startInfo);
+			}
+			catch (Exception ex)
+			{
+				return $"Failed to open explorer, reason:{NewLine}" +
+					   $"\t{ex.Message}";
+			}
+
+			return string.Empty;
 		}
 	}
 }
