@@ -1,4 +1,5 @@
-﻿namespace Shared
+﻿using System.Linq;
+namespace Shared
 {
 	/// <summary>
 	/// Gets the World of Warcraft install directory and saves the configuration
@@ -15,28 +16,14 @@
 				throw new FileNotFoundException("The config file does not exist, input required from the user.");
 			}
 
-			var lines = File.ReadAllLines(configFile);		// read and parse file
+			var lines = File.ReadAllLines(configFile);
 
-			foreach (var line in lines)
-			{
-				if (line.StartsWith(directoryToken))
-				{
-					string result = line.Replace(directoryToken, string.Empty).TrimEnd('\\');
-					try
-					{
-						GameDirectory = new NonEmptyString(result);
-					}
-					catch (Exception)
-					{ 
-						throw new ArgumentException($"The Warcraft directory argument from the config file is empty.");
-					}
-				}
-			}
+			var directoryLine = File.ReadLines(configFile).FirstOrDefault(line => line.StartsWith(directoryToken)) ??
+				throw new InvalidOperationException("Config file does not contain a valid directory entry.");
 
-			if (!gameDirectoryIsValid())
-			{
-				throw new ArgumentException($"The Warcraft directory from the config file is not valid:  {GameDirectory}");
-			}
+			var directory = directoryLine.Replace(directoryToken, "").TrimEnd('\\');
+			GameDirectory = new NonEmptyString(directory);
+			ValidateGameDirectory();
 		}
 
 		/// <summary>
@@ -46,11 +33,8 @@
 		public UserConfig(NonEmptyString gameDirectoryFromUser)
 		{
 			GameDirectory = gameDirectoryFromUser;
-			
-			if (!gameDirectoryIsValid())
-			{
-				throw new ArgumentException($"The Warcraft directory parameter is not valid:  {GameDirectory}");
-			}
+			ValidateGameDirectory();
+
 			try
 			{
 				UpdateFile();
@@ -73,10 +57,7 @@
 
 			try
 			{
-				if (!Directory.Exists(Globals.UserDirectory))
-				{
-					Directory.CreateDirectory(Globals.UserDirectory);
-				}
+				Directory.CreateDirectory(Globals.UserDirectory);
 				File.WriteAllLines(configFile, contents);
 			}
 			catch (Exception)
@@ -92,20 +73,16 @@
 
 		private const string fileName = "config.ini";
 		private const string directoryToken = "WarcraftDirectory=";
-		private static string configFile { get; } = Path.Combine($"{Globals.UserDirectory}", fileName);
+		private static string configFile => Path.Combine(Globals.UserDirectory, fileName);
 
-		/// <summary>
-		/// Checks that the GameDirectory is a valid World of Wardcraft location
-		/// </summary>
-		/// <returns></returns>
-		private bool gameDirectoryIsValid()
+		private bool IsValidGameDirectory() => Directory.Exists(GameDirectory) && GameDirectory.value.EndsWith("World of Warcraft");
+
+		private void ValidateGameDirectory()
 		{
-			if (Directory.Exists(GameDirectory) && GameDirectory.value.EndsWith("World of Warcraft"))
+			if (!IsValidGameDirectory())
 			{
-				return true;
+				throw new ArgumentException($"The Warcraft directory is not valid: {GameDirectory}");
 			}
-
-			return false;
 		}
 	}
 }
