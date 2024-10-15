@@ -79,10 +79,7 @@ namespace Shared
 
 		private void ValidateGameDirectory()
 		{
-			if (!IsValidGameDirectory())
-			{
-				throw new ArgumentException($"The Warcraft directory is not valid: {GameDirectory}");
-			}
+			if (!IsValidGameDirectory()) throw new ArgumentException($"The Warcraft directory is not valid: {GameDirectory}");
 		}
 	}
 }
